@@ -86,3 +86,16 @@ The submitted coursework archives contained mock user records with realistic ema
 This is a group coursework project. Only the per-member SQL and MongoDB query sections are labelled as individual query contributions here. The original slide decks and the class contribution form are not included because they may contain classmates' personal information. Obtain team permission before redistributing group-owned material or adding other contributors' names.
 
 No open-source license is applied to this coursework repository. Add a license only after confirming that you have the right to license all included group work and data.
+
+
+## Neo4j: individual Cypher query contribution
+
+The Neo4j portion includes the team's graph seed and a separate file containing the ten Cypher scenarios assigned to Jarin in the team contribution record:
+
+- `neo4j/seed/skillup_graph_demo.cypher` — group-level graph seed for the SkillUp demo database.
+- `neo4j/queries/jarin_cypher_queries.cypher` — individual query contribution, scenarios 31–40.
+- `docs/jarin_contribution_summary.md` — a sanitized summary of the contributor's recorded project responsibilities and assigned scenarios.
+
+Run the graph seed once in a fresh, disposable Neo4j database. Then open `neo4j/queries/jarin_cypher_queries.cypher` and execute the scenarios individually. Do not run the entire file as a batch because some scenarios update or delete graph data. Scenario 37 includes a prerequisite block that adds `accountCreated` timestamps to the seeded User nodes before calculating the month with the most registrations.
+
+The complete team contribution form and the full 40-query team file are intentionally not redistributed here. They contain other students' names, student identifiers, and work allocations. This repository includes only the contributor's own recorded summary and assigned query scenarios.
