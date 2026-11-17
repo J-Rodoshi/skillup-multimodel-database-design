@@ -1,63 +1,117 @@
-# SkillUp: Multi-Model Database Design
+# SkillUp — Multi-Model Database Design
 
-A database-design coursework project modelling an online learning platform across relational, document, and graph database paradigms. The project explores how the same business domain can be represented and queried using MySQL, MongoDB, and Neo4j.
+**One online learning platform. Three ways to model its data.**
 
-## Project overview
+SkillUp is a database engineering coursework project that models an online learning platform using **MySQL, MongoDB, and Neo4j**. It explores how the same domain—learners, instructors, courses, enrolments, reviews, and certificates—can be structured across relational, document, and graph databases.
 
-| Model | Implementation | What it demonstrates |
+The repository brings together schema design, sample data, data operations, and analytical queries from two stages of the SkillUp project.
+
+---
+
+## Project at a glance
+
+| Database | Data model | Main focus |
 |---|---|---|
-| Relational | MySQL | Normalized schema, primary/foreign keys, junction tables, SQL joins, aggregation, updates, and deletes |
-| Document | MongoDB | Embedded learner/course documents, collection design, CRUD, and aggregation pipelines |
-| Graph | Neo4j | Nodes, relationships, uniqueness constraints, and connected-data representation with Cypher |
+| **MySQL** | Relational | Normalized schema, 17 tables, primary and foreign keys, junction tables, joins, and aggregations |
+| **MongoDB** | Document | Three collections (`users`, `courses`, and `reviews`), embedded documents, CRUD operations, and aggregation pipelines |
+| **Neo4j** | Graph | Nodes, relationships, uniqueness constraints, and connected-data queries using Cypher |
 
-The MySQL schema contains 17 tables. The MongoDB implementation uses three collections (`users`, `courses`, `reviews`). The Neo4j seed represents the SkillUp domain with users, courses, organizations, languages, categories, skills, chapters, enrollments, certificates, and reviews.
+### The domain
 
-## Repository layout
+The data model covers the main elements of an online learning platform:
+
+- Learners and instructors
+- Courses and organizations
+- Categories, skills, and languages
+- Syllabus chapters and learning items
+- Enrolments and progress
+- Reviews and certificates
+
+## What you can explore
+
+### 1. Relational modelling with MySQL
+
+Explore a normalized relational schema with primary and foreign keys, many-to-many junction tables, and relationships between the platform's core entities. The SQL scripts include schema creation, demonstration data, data updates, and analytical queries.
+
+### 2. Document modelling with MongoDB
+
+See how learner, course, and review information can be represented using documents, embedded structures, and references. The query examples use CRUD operations and aggregation pipelines for platform analysis.
+
+### 3. Graph modelling with Neo4j
+
+Explore the SkillUp domain as a property graph. The Cypher scripts create nodes and relationships for learners, instructors, courses, skills, organizations, enrolments, and reviews. Query examples cover course discovery, enrolment patterns, certificates, churn analysis, and ratings.
+
+### 4. Earlier relational database exercises
+
+The `mysql/mini_project_ii/` folder preserves query exercises from the earlier RDB Mini Project II. They are kept separate from the later `skillup_demo` implementation because they target the earlier project schema.
+
+---
+
+## Repository structure
 
 ```text
-mysql/
-  schema/       relational DDL
-  seed/         anonymized demonstration data
-  queries/      individual SQL query contribution
-mongodb/
-  seed/         anonymized demo seed script (reset is guarded)
-  queries/      individual MongoDB query contribution
-neo4j/
-  seed/         anonymized graph seed script
+skillup-multimodel-database-design/
+│
+├── mysql/
+│   ├── schema/
+│   │   └── 01_schema.sql
+│   ├── seed/
+│   │   └── 02_seed_demo_data.sql
+│   ├── queries/
+│   │   └── jarin_sql_queries.sql
+│   └── mini_project_ii/
+│       ├── README.md
+│       └── queries/
+│           └── jarin_queries.sql
+│
+├── mongodb/
+│   ├── seed/
+│   │   └── seed_demo_data.js
+│   └── queries/
+│       └── jarin_mongodb_queries.js
+│
+├── neo4j/
+│   ├── seed/
+│   │   └── skillup_graph_demo.cypher
+│   └── queries/
+│       └── jarin_cypher_queries.cypher
+│
+├── docs/
+│   ├── jarin_contribution_summary.md
+│   └── mini_project_ii_contribution.md
+│
+├── DATA_SANITIZATION.md
+└── README.md
 ```
 
-## Your documented individual query work
+---
 
-The `mysql/queries/jarin_sql_queries.sql` and `mongodb/queries/jarin_mongodb_queries.js` files contain the queries from the per-member coursework sections, separated from other students' sections. They cover:
+## Run the project locally
 
-- inserting and updating syllabus chapters;
-- recording course drops and identifying inactive courses;
-- finding popular courses and Thai-language courses;
-- retrieving certificates issued in the previous month;
-- identifying the month with the highest number of registrations;
-- churn analysis for learners who have not completed a Data Science course;
-- ranking instructors and courses by ratings.
-
-The relational schema, MongoDB seed model, and Neo4j graph seed are group-level coursework artefacts. Do not describe all group outputs as individually authored.
-
-## Run locally
+The scripts are intended for local experimentation. Use a disposable database when running seed or data-changing scripts.
 
 ### MySQL
 
-Use MySQL 8.0 or later. From the repository root:
+**Requirements:** MySQL 8.0+
+
+From the repository root, create the schema and load the demonstration data:
 
 ```bash
 mysql -u root -p < mysql/schema/01_schema.sql
 mysql -u root -p < mysql/seed/02_seed_demo_data.sql
 ```
 
-The schema creates a database named `skillup_demo`. The seed script resets/repopulates tables in that demo database; only run it against a disposable coursework database. The individual SQL file uses `@course_id` and `@enrollment_id`; change those variables to valid IDs before executing the update/delete examples.
+The schema creates a database named `skillup_demo`. The seed script clears and repopulates its tables. **Do not run it against a database containing data you need to keep.**
+
+The query collection is in `mysql/queries/jarin_sql_queries.sql`. Set valid values for `@course_id` and `@enrollment_id` before running the related update examples.
 
 ### MongoDB
 
-Use MongoDB Community Server and `mongosh`. The seed is deliberately limited to a database named `skillup_demo` and requires explicit confirmation before dropping its three collections.
+**Requirements:** MongoDB Community Server and `mongosh`
 
-PowerShell:
+The seed script targets a database named `skillup_demo`. It drops and recreates its three collections, so it requires an explicit confirmation variable.
+
+**PowerShell:**
 
 ```powershell
 $env:ALLOW_DESTRUCTIVE_RESET = "YES"
@@ -65,48 +119,38 @@ mongosh "mongodb://localhost:27017" --file mongodb/seed/seed_demo_data.js
 Remove-Item Env:ALLOW_DESTRUCTIVE_RESET
 ```
 
-macOS/Linux:
+**macOS/Linux:**
 
 ```bash
 ALLOW_DESTRUCTIVE_RESET=YES mongosh "mongodb://localhost:27017" --file mongodb/seed/seed_demo_data.js
 ```
 
-Run the individual MongoDB queries in `mongodb/queries/jarin_mongodb_queries.js` in `mongosh` after loading the demo data.
+After loading the data, run the examples in `mongodb/queries/jarin_mongodb_queries.js` using `mongosh`.
 
 ### Neo4j
 
-Use Neo4j 5.x. Open `neo4j/seed/skillup_graph_demo.cypher` in Neo4j Browser or run it with `cypher-shell` against a fresh, disposable database. It uses `CREATE` statements and uniqueness constraints, so do not run it repeatedly against an already-populated database.
+**Requirements:** Neo4j 5.x
 
-## Data and privacy note
+1. Create or select an empty, disposable database.
+2. Open `neo4j/seed/skillup_graph_demo.cypher` in Neo4j Browser, or execute it with `cypher-shell`.
+3. Open `neo4j/queries/jarin_cypher_queries.cypher` and run the scenarios individually.
 
-The submitted coursework archives contained mock user records with realistic email addresses, phone numbers, dates of birth, and password-hash-shaped fields. The public-ready copies in this repository replace contact details with the reserved `example.invalid` domain, remove phone/date-of-birth values, and replace hash values with non-credential placeholders. They must not be used for authentication or production systems.
+The graph seed uses `CREATE` statements and uniqueness constraints. Run it once in a fresh database rather than repeatedly against an existing graph. Some query scenarios update or delete data; review each statement before execution. The registration-trend scenario includes a setup block that adds registration timestamps before its analysis query.
 
-## Academic context and attribution
+### Earlier RDB Mini Project II queries
 
-This is a group coursework project. Only the per-member SQL and MongoDB query sections are labelled as individual query contributions here. The original slide decks and the class contribution form are not included because they may contain classmates' personal information. Obtain team permission before redistributing group-owned material or adding other contributors' names.
+The scripts under `mysql/mini_project_ii/` belong to the earlier project stage and target its original `skillup` schema. The matching schema and seed data are not included here, so these queries are **not guaranteed to run against** the later `skillup_demo` database.
 
-No open-source license is applied to this coursework repository. Add a license only after confirming that you have the right to license all included group work and data.
+---
 
+## Data notes
 
-## Neo4j: individual Cypher query contribution
+The repository uses demonstration records. Contact details have been anonymized with the reserved `example.invalid` domain; phone and date-of-birth fields have been removed or set to null; password-hash fields contain non-credential placeholders.
 
-The Neo4j portion includes the team's graph seed and a separate file containing the ten Cypher scenarios assigned to Jarin in the team contribution record:
+The sample records are for database demonstrations only. They are not authentication data and must not be used in production systems.
 
-- `neo4j/seed/skillup_graph_demo.cypher` — group-level graph seed for the SkillUp demo database.
-- `neo4j/queries/jarin_cypher_queries.cypher` — individual query contribution, scenarios 31–40.
-- `docs/jarin_contribution_summary.md` — a sanitized summary of the contributor's recorded project responsibilities and assigned scenarios.
+## Project scope
 
-Run the graph seed once in a fresh, disposable Neo4j database. Then open `neo4j/queries/jarin_cypher_queries.cypher` and execute the scenarios individually. Do not run the entire file as a batch because some scenarios update or delete graph data. Scenario 37 includes a prerequisite block that adds `accountCreated` timestamps to the seeded User nodes before calculating the month with the most registrations.
+This repository documents academic coursework and its database implementations. Some files represent shared project artefacts; the query collections and project notes provide additional context about the work. The original team presentation files and full team contribution forms are not included.
 
-The complete team contribution form and the full 40-query team file are intentionally not redistributed here. They contain other students' names, student identifiers, and work allocations. This repository includes only the contributor's own recorded summary and assigned query scenarios.
-
-
-## Earlier coursework: RDB Mini Project II
-
-This repository also documents an earlier SkillUp relational-database coursework submission. Its ten individually assigned SQL scenarios are kept separately under `mysql/mini_project_ii/` so they are not confused with the later Mini Project III / DMM `skillup_demo` schema.
-
-- [Mini Project II overview and execution notes](mysql/mini_project_ii/README.md)
-- [Jarin's assigned SQL queries (scenarios 4, 7, 12, 16, 21, 25, 29, 32, 33 and 34)](mysql/mini_project_ii/queries/jarin_queries.sql)
-- [Sanitized individual contribution summary](docs/mini_project_ii_contribution.md)
-
-The original Mini Project II schema and seed data were not part of the supplied files, so these queries must be run against the matching Mini Project II database. They should not be assumed to run against the later `skillup_demo` seed in this repository.
+No open-source license is currently provided. Please obtain the relevant permissions before reusing or redistributing project materials.
