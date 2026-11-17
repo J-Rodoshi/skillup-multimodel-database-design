@@ -99,3 +99,14 @@ The Neo4j portion includes the team's graph seed and a separate file containing 
 Run the graph seed once in a fresh, disposable Neo4j database. Then open `neo4j/queries/jarin_cypher_queries.cypher` and execute the scenarios individually. Do not run the entire file as a batch because some scenarios update or delete graph data. Scenario 37 includes a prerequisite block that adds `accountCreated` timestamps to the seeded User nodes before calculating the month with the most registrations.
 
 The complete team contribution form and the full 40-query team file are intentionally not redistributed here. They contain other students' names, student identifiers, and work allocations. This repository includes only the contributor's own recorded summary and assigned query scenarios.
+
+
+## Earlier coursework: RDB Mini Project II
+
+This repository also documents an earlier SkillUp relational-database coursework submission. Its ten individually assigned SQL scenarios are kept separately under `mysql/mini_project_ii/` so they are not confused with the later Mini Project III / DMM `skillup_demo` schema.
+
+- [Mini Project II overview and execution notes](mysql/mini_project_ii/README.md)
+- [Jarin's assigned SQL queries (scenarios 4, 7, 12, 16, 21, 25, 29, 32, 33 and 34)](mysql/mini_project_ii/queries/jarin_queries.sql)
+- [Sanitized individual contribution summary](docs/mini_project_ii_contribution.md)
+
+The original Mini Project II schema and seed data were not part of the supplied files, so these queries must be run against the matching Mini Project II database. They should not be assumed to run against the later `skillup_demo` seed in this repository.
